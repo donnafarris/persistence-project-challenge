@@ -70,10 +70,11 @@ const deleteStudent = (request, response) => {
 };
 
 const searchStudents = (request, response) => {
-  const name = request.query.search;
+  const name = request.query.name;
+  const nameStr = `%${name.toLowerCase()}`;
   pool.query(
-    "SELECT * FROM students WHERE name LIKE CONCAT('%', $1, '%')",
-    [name],
+    "SELECT * FROM students WHERE LOWER(name) LIKE $1",
+    [nameStr],
     (error, results) => {
       if (error) {
         throw error;
@@ -121,5 +122,5 @@ module.exports = {
   deleteStudent,
   searchStudents,
   newGrade,
-  getGradesByStudent
+  getGradesByStudent,
 };
